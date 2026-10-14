@@ -1,1 +1,596 @@
-https://web-sandbox.oaiusercontent.com/auth/discord
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b12">
+<title>WebKill — Security Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #090b12;
+  --panel: #121522;
+  --text: #f3f4fb;
+  --muted: #969caf;
+  --red: #ff405c;
+  --purple: #9472ff;
+  --green: #56e6ac;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.topbar {
+  max-width: 1200px;
+  margin: auto;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ffffff12;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #ff6479, #d91d45);
+  box-shadow: 0 0 25px #ff405c30;
+}
+
+.logo span {
+  color: white;
+}
+
+.red {
+  color: var(--red);
+}
+
+nav {
+  display: flex;
+  gap: 28px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+nav a:hover {
+  color: white;
+}
+
+.discord-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 17px;
+  border-radius: 9px;
+  background: #5865f2;
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.discord-button:hover {
+  background: #4752c4;
+  transform: translateY(-2px);
+}
+
+.hero {
+  max-width: 1144px;
+  margin: auto;
+  padding: 95px 28px 75px;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.eyebrow {
+  color: #ff6379;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font: 700 clamp(42px, 5vw, 64px)/1.08 'Space Grotesk', sans-serif;
+  letter-spacing: -2px;
+  margin: 24px 0 18px;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #ff526a, #a17cff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.description {
+  max-width: 490px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.primary {
+  background: var(--red);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.primary:hover {
+  background: #ff6077;
+  transform: translateY(-2px);
+}
+
+.secondary {
+  padding: 14px 18px;
+  border: 1px solid #ffffff20;
+  border-radius: 9px;
+  color: #dddfea;
+  font-size: 13px;
+}
+
+.notice {
+  margin-top: 23px;
+  color: #858ba0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.visual {
+  min-height: 340px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.orbit {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ff405c30;
+  border-radius: 50%;
+  box-shadow: 0 0 80px #ff405c0b;
+}
+
+.shield {
+  width: 155px;
+  height: 175px;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(50% 0, 95% 17%, 87% 67%, 50% 100%, 13% 67%, 5% 17%);
+  background: linear-gradient(145deg, #ff6378, #741d42);
+  filter: drop-shadow(0 0 30px #ff405c40);
+}
+
+.shield span {
+  font: 700 38px 'Space Grotesk', sans-serif;
+  color: white;
+}
+
+.floating {
+  position: absolute;
+  background: #151824;
+  border: 1px solid #ffffff18;
+  padding: 15px 17px;
+  border-radius: 12px;
+  box-shadow: 0 15px 45px #0006;
+}
+
+.floating small {
+  display: block;
+  color: #8e94aa;
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+.floating strong {
+  font-size: 12px;
+}
+
+.float-top {
+  top: 35px;
+  right: 0;
+}
+
+.float-bottom {
+  bottom: 30px;
+  left: 0;
+}
+
+.stats {
+  max-width: 1088px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.stat {
+  padding: 25px;
+  background: #ffffff05;
+  border: 1px solid #ffffff12;
+}
+
+.stat:first-child {
+  border-radius: 13px 0 0 13px;
+}
+
+.stat:last-child {
+  border-radius: 0 13px 13px 0;
+}
+
+.stat small {
+  color: #858ba0;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.stat h3 {
+  font-size: 14px;
+  margin: 10px 0 7px;
+}
+
+.stat p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.section {
+  max-width: 1088px;
+  margin: auto;
+  padding: 100px 20px 80px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.section-heading h2 {
+  font: 600 34px 'Space Grotesk', sans-serif;
+  margin: 14px 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: linear-gradient(145deg, #151827, #0f111a);
+  border: 1px solid #ffffff12;
+  border-radius: 13px;
+  padding: 25px;
+  transition: .2s;
+}
+
+.card:hover {
+  border-color: #ff405c60;
+  transform: translateY(-4px);
+}
+
+.card-icon {
+  font-size: 28px;
+  margin-bottom: 22px;
+}
+
+.card h3 {
+  font: 600 17px 'Space Grotesk', sans-serif;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.tag {
+  color: #ff7588;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.security {
+  max-width: 1048px;
+  margin: 0 auto 80px;
+  padding: 30px;
+  background: linear-gradient(110deg, #171522, #11131d);
+  border: 1px solid #9472ff30;
+  border-radius: 15px;
+}
+
+.security h2 {
+  font: 600 25px 'Space Grotesk', sans-serif;
+}
+
+.security p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+footer {
+  border-top: 1px solid #ffffff12;
+  padding: 28px;
+  text-align: center;
+  color: #777d91;
+  font-size: 11px;
+}
+
+footer strong {
+  color: white;
+}
+
+@media (max-width: 800px) {
+  nav {
+    display: none;
+  }
+
+  .topbar {
+    padding: 18px;
+  }
+
+  .discord-button {
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 65px 22px;
+  }
+
+  .visual {
+    min-height: 310px;
+  }
+
+  .float-top {
+    right: 0;
+  }
+
+  .float-bottom {
+    left: 0;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat,
+  .stat:first-child,
+  .stat:last-child {
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .security {
+    margin: 0 18px 60px;
+  }
+
+  .section {
+    padding: 75px 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#">
+    <div class="logo"><span>WK</span></div>
+    <span>WEBKILL<span class="red">.</span></span>
+  </a>
+
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#security">Security</a>
+  </nav>
+
+  <a class="discord-button" href="/auth/discord">
+    Login with Discord ↗
+  </a>
+</header>
+
+<main>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">● WEBHOOK SECURITY TOOLKIT</div>
+
+    <h1>
+      Keep your webhooks.<br>
+      <span class="gradient">Keep control.</span>
+    </h1>
+
+    <p class="description">
+      A focused security dashboard for inspecting webhook metadata,
+      reviewing checks, and keeping sensitive credentials out of
+      the wrong hands.
+    </p>
+
+    <div class="actions">
+      <a class="primary" href="/auth/discord">
+        Continue with Discord ↗
+      </a>
+
+      <a class="secondary" href="#features">
+        Explore features
+      </a>
+    </div>
+
+    <p class="notice">
+      ◆ Only inspect webhooks you're authorized to manage.
+      Never share webhook tokens.
+    </p>
+  </div>
+
+  <div class="visual">
+    <div class="orbit"></div>
+
+    <div class="shield">
+      <span>WK</span>
+    </div>
+
+    <div class="floating float-top">
+      <small>WEBHOOK STATUS</small>
+      <strong>Ready to inspect</strong>
+    </div>
+
+    <div class="floating float-bottom">
+      <small>SECURITY MODE</small>
+      <strong>Credential-safe</strong>
+    </div>
+  </div>
+</section>
+
+<section class="stats" id="dashboard">
+
+  <div class="stat">
+    <small>WEBHOOK INSPECTOR</small>
+    <h3>Metadata overview</h3>
+    <p>Review fields returned by Discord.</p>
+  </div>
+
+  <div class="stat">
+    <small>ACTIVITY</small>
+    <h3>Review history</h3>
+    <p>Keep track of checks on your backend.</p>
+  </div>
+
+  <div class="stat">
+    <small>ACCOUNT</small>
+    <h3>Discord OAuth2</h3>
+    <p>Sign in without collecting passwords.</p>
+  </div>
+
+</section>
+
+<section class="section" id="features">
+
+  <div class="section-heading">
+    <div class="eyebrow">BUILT FOR RESPONSIBLE SECURITY</div>
+    <h2>Your tools. One place.</h2>
+    <p>Start with the essentials and expand as WebKill grows.</p>
+  </div>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="card-icon">🔎</div>
+      <h3>Webhook Inspector</h3>
+      <p>
+        Display available webhook metadata in a readable format.
+        Keep webhook tokens hidden from pages, logs, and screenshots.
+      </p>
+      <span class="tag">METADATA</span>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">📋</div>
+      <h3>Security Activity</h3>
+      <p>
+        Show recent checks and outcomes stored by your backend,
+        with clear timestamps and useful context.
+      </p>
+      <span class="tag">AUDIT TRAIL</span>
+    </article>
+
+    <article class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Discord Account</h3>
+      <p>
+        Use Discord OAuth2 to identify signed-in users and control
+        access to protected features.
+      </p>
+      <span class="tag">OAUTH2</span>
+    </article>
+
+  </div>
+</section>
+
+<section class="security" id="security">
+  <div class="eyebrow">SECURITY FIRST</div>
+  <h2>Secrets stay secret.</h2>
+  <p>
+    Never put a Discord client secret or webhook token in frontend
+    JavaScript. Keep secrets on your server, validate sessions there,
+    and authorize each action.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <strong>☠ WEBKILL.</strong>
+  &nbsp; Built for safer webhook management.
+  <br><br>
+  © <span id="year"></span> WebKill
+</footer>
+
+<script>
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+</script>
+
+</body>
+  </html>
