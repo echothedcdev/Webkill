@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+```
+html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -334,6 +334,30 @@ footer {
         letter-spacing: -1.5px;
     }
 }
+
+/* Added: authorized webhook message sender */
+.webhook-input, .webhook-message {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font: inherit;
+}
+.webhook-message {
+    min-height: 190px;
+    resize: vertical;
+    line-height: 1.6;
+}
+.webhook-help {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
 </style>
 </head>
 
@@ -450,6 +474,44 @@ footer {
         </article>
 
     </section>
+
+
+        <!-- Added: webhook message sender. Use only with a webhook you own or are authorized to use. -->
+        <article class="card" style="margin-top:20px;">
+            <div class="card-icon">📩</div>
+            <h2>Webhook Message Sender</h2>
+            <p>Send one security notice to a webhook you own or have permission to use. The URL is not saved by this page.</p>
+
+            <label for="webhookUrl" class="info-label">Webhook URL</label>
+            <input
+                class="webhook-input"
+                id="webhookUrl"
+                type="password"
+                inputmode="url"
+                autocomplete="off"
+                placeholder="https://discord.com/api/webhooks/..."
+                aria-describedby="webhookHelp"
+            >
+
+            <label for="webhookMessage" class="info-label" style="display:block;margin-top:16px;">Message</label>
+            <textarea class="webhook-message" id="webhookMessage" maxlength="2000">☠️ WebKill Security Notice
+
+🚨 Suspicious activity may need review.
+
+🛡️ If you believe this webhook is being used for scams, stop using it and review Discord's rules. Report suspected abuse through Discord's official reporting tools.
+
+— WebKill Security</textarea>
+
+            <p class="webhook-help" id="webhookHelp">
+                Only use this with a webhook you own or are authorized to manage. A webhook URL acts like a secret; don't share it.
+            </p>
+            <button class="button" id="sendWebhookButton" type="button">📩 Send Message</button>
+            <div class="status" id="webhookSendStatus" role="status" aria-live="polite">
+                <span class="dot" id="webhookSendDot"></span>
+                <span id="webhookSendText">Ready. Nothing has been sent.</span>
+            </div>
+        </article>
+
 
     <section class="features">
 
@@ -627,7 +689,88 @@ logoutButton.addEventListener("click", async () => {
 });
 
 checkAuthentication();
+
+// Added: one-message sender for webhooks the user owns or is authorized to manage.
+// The webhook URL is used only for this request and is not stored in localStorage.
+const webhookUrlInput = document.getElementById("webhookUrl");
+const webhookMessageInput = document.getElementById("webhookMessage");
+const sendWebhookButton = document.getElementById("sendWebhookButton");
+const webhookSendText = document.getElementById("webhookSendText");
+const webhookSendDot = document.getElementById("webhookSendDot");
+
+sendWebhookButton.addEventListener("click", async () => {
+    const webhookUrl = webhookUrlInput.value.trim();
+    const message = webhookMessageInput.value.trim();
+
+    let parsedUrl;
+    try {
+        parsedUrl = new URL(webhookUrl);
+    } catch {
+        webhookSendText.textContent = "Enter a valid Discord webhook URL.";
+        webhookSendDot.className = "dot error";
+        return;
+    }
+
+    const isDiscordWebhook =
+        parsedUrl.protocol === "https:" &&
+        (parsedUrl.hostname === "discord.com" ||
+         parsedUrl.hostname === "discordapp.com") &&
+        /^\\/api\\/webhooks\\/\\d+\\/[^/]+\\/?$/.test(parsedUrl.pathname);
+
+    if (!isDiscordWebhook) {
+        webhookSendText.textContent =
+            "For safety, enter a standard Discord webhook URL.";
+        webhookSendDot.className = "dot error";
+        return;
+    }
+
+    if (!message) {
+        webhookSendText.textContent = "Enter a message first.";
+        webhookSendDot.className = "dot error";
+        return;
+    }
+
+    if (!window.confirm(
+        "Send this message once to the webhook you own or are authorized to use?"
+    )) {
+        return;
+    }
+
+    sendWebhookButton.disabled = true;
+    sendWebhookButton.textContent = "Sending...";
+    webhookSendText.textContent = "Sending one message...";
+    webhookSendDot.className = "dot";
+
+    try {
+        const response = await fetch(webhookUrl + (parsedUrl.search ? "&" : "?") + "wait=true", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: message })
+        });
+
+        if (response.ok) {
+            webhookSendText.textContent = "Message sent successfully.";
+            webhookSendDot.className = "dot online";
+            webhookUrlInput.value = "";
+        } else {
+            webhookSendText.textContent =
+                `Discord rejected the message (HTTP ${response.status}). Check the URL and try again.`;
+            webhookSendDot.className = "dot error";
+        }
+    } catch (error) {
+        // Browser CORS may prevent reading Discord's response; do not claim it succeeded.
+        webhookSendText.textContent =
+            "Could not confirm the result. Your browser may block this request due to CORS. Check Discord before retrying to avoid sending duplicates.";
+        webhookSendDot.className = "dot error";
+        console.error("Webhook send error:", error);
+    } finally {
+        sendWebhookButton.disabled = false;
+        sendWebhookButton.textContent = "📩 Send Message";
+    }
+});
+
 </script>
 
 </body>
               </html>
+```
