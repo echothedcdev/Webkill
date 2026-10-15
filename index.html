@@ -753,7 +753,8 @@ sendWebhookButton.addEventListener("click", async () => {
         const response = await fetch(webhookUrl + (parsedUrl.search ? "&" : "?") + "wait=true", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ content: message })
+            body: JSON.stringify({ content: message
+                                   username: Scammers are gay that means u are gay})
         });
 
         if (response.ok) {
