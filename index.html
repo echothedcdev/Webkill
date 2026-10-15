@@ -3,594 +3,630 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b12">
+<meta name="theme-color" content="#090b10">
+
 <title>WebKill — Security Dashboard</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
 :root {
-  --bg: #090b12;
-  --panel: #121522;
-  --text: #f3f4fb;
-  --muted: #969caf;
-  --red: #ff405c;
-  --purple: #9472ff;
-  --green: #56e6ac;
+    --bg: #090b10;
+    --panel: #11151e;
+    --panel2: #171d28;
+    --border: #273143;
+    --text: #f4f6fb;
+    --muted: #9aa6ba;
+    --accent: #8b5cf6;
+    --accent2: #6d45d6;
+    --red: #ef4444;
+    --green: #22c55e;
 }
 
 * {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, #20143b 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+}
+
+button, a {
+    font: inherit;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+    color: inherit;
+    text-decoration: none;
 }
 
-.topbar {
-  max-width: 1200px;
-  margin: auto;
-  padding: 22px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #ffffff12;
+.navbar {
+    height: 76px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(9, 11, 16, .88);
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.6px;
 }
 
 .logo {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #ff6479, #d91d45);
-  box-shadow: 0 0 25px #ff405c30;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #a78bfa, #6d28d9);
+    font-size: 22px;
 }
 
-.logo span {
-  color: white;
+.nav-label {
+    color: var(--muted);
+    font-size: 13px;
 }
 
-.red {
-  color: var(--red);
-}
-
-nav {
-  display: flex;
-  gap: 28px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-nav a:hover {
-  color: white;
-}
-
-.discord-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 12px 17px;
-  border-radius: 9px;
-  background: #5865f2;
-  color: white;
-  font-weight: 700;
-  font-size: 13px;
-  transition: .2s;
-}
-
-.discord-button:hover {
-  background: #4752c4;
-  transform: translateY(-2px);
+main {
+    width: min(1080px, 90%);
+    margin: 0 auto;
+    padding: 75px 0;
 }
 
 .hero {
-  max-width: 1144px;
-  margin: auto;
-  padding: 95px 28px 75px;
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  align-items: center;
-  gap: 40px;
+    text-align: center;
+    margin-bottom: 45px;
 }
 
 .eyebrow {
-  color: #ff6379;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
+    display: inline-block;
+    padding: 7px 12px;
+    border: 1px solid #49377a;
+    border-radius: 999px;
+    color: #c4b5fd;
+    background: #211637;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 h1 {
-  font: 700 clamp(42px, 5vw, 64px)/1.08 'Space Grotesk', sans-serif;
-  letter-spacing: -2px;
-  margin: 24px 0 18px;
+    margin: 22px 0 14px;
+    font-size: clamp(38px, 7vw, 68px);
+    line-height: 1.05;
+    letter-spacing: -3px;
 }
 
 .gradient {
-  background: linear-gradient(90deg, #ff526a, #a17cff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+    color: #b9a0ff;
 }
 
-.description {
-  max-width: 490px;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.9;
+.hero p {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 16px;
 }
 
-.actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 28px;
-}
-
-.primary {
-  background: var(--red);
-  color: white;
-  padding: 14px 18px;
-  border-radius: 9px;
-  font-size: 13px;
-  font-weight: 700;
-  transition: .2s;
-}
-
-.primary:hover {
-  background: #ff6077;
-  transform: translateY(-2px);
-}
-
-.secondary {
-  padding: 14px 18px;
-  border: 1px solid #ffffff20;
-  border-radius: 9px;
-  color: #dddfea;
-  font-size: 13px;
-}
-
-.notice {
-  margin-top: 23px;
-  color: #858ba0;
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-.visual {
-  min-height: 340px;
-  display: grid;
-  place-items: center;
-  position: relative;
-}
-
-.orbit {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  border: 1px solid #ff405c30;
-  border-radius: 50%;
-  box-shadow: 0 0 80px #ff405c0b;
-}
-
-.shield {
-  width: 155px;
-  height: 175px;
-  display: grid;
-  place-items: center;
-  clip-path: polygon(50% 0, 95% 17%, 87% 67%, 50% 100%, 13% 67%, 5% 17%);
-  background: linear-gradient(145deg, #ff6378, #741d42);
-  filter: drop-shadow(0 0 30px #ff405c40);
-}
-
-.shield span {
-  font: 700 38px 'Space Grotesk', sans-serif;
-  color: white;
-}
-
-.floating {
-  position: absolute;
-  background: #151824;
-  border: 1px solid #ffffff18;
-  padding: 15px 17px;
-  border-radius: 12px;
-  box-shadow: 0 15px 45px #0006;
-}
-
-.floating small {
-  display: block;
-  color: #8e94aa;
-  font-size: 9px;
-  letter-spacing: 1px;
-  margin-bottom: 7px;
-}
-
-.floating strong {
-  font-size: 12px;
-}
-
-.float-top {
-  top: 35px;
-  right: 0;
-}
-
-.float-bottom {
-  bottom: 30px;
-  left: 0;
-}
-
-.stats {
-  max-width: 1088px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.stat {
-  padding: 25px;
-  background: #ffffff05;
-  border: 1px solid #ffffff12;
-}
-
-.stat:first-child {
-  border-radius: 13px 0 0 13px;
-}
-
-.stat:last-child {
-  border-radius: 0 13px 13px 0;
-}
-
-.stat small {
-  color: #858ba0;
-  font-size: 9px;
-  letter-spacing: 1px;
-}
-
-.stat h3 {
-  font-size: 14px;
-  margin: 10px 0 7px;
-}
-
-.stat p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
-  margin-bottom: 0;
-}
-
-.section {
-  max-width: 1088px;
-  margin: auto;
-  padding: 100px 20px 80px;
-}
-
-.section-heading {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.section-heading h2 {
-  font: 600 34px 'Space Grotesk', sans-serif;
-  margin: 14px 0;
-}
-
-.section-heading p {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .card {
-  background: linear-gradient(145deg, #151827, #0f111a);
-  border: 1px solid #ffffff12;
-  border-radius: 13px;
-  padding: 25px;
-  transition: .2s;
+    padding: 25px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(17, 21, 30, .94);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, .14);
 }
 
-.card:hover {
-  border-color: #ff405c60;
-  transform: translateY(-4px);
-}
-
-.card-icon {
-  font-size: 28px;
-  margin-bottom: 22px;
-}
-
-.card h3 {
-  font: 600 17px 'Space Grotesk', sans-serif;
+.card h2 {
+    margin: 0 0 8px;
+    font-size: 19px;
 }
 
 .card p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.9;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
 }
 
-.tag {
-  color: #ff7588;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+.card-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 17px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: #251b3b;
+    font-size: 23px;
 }
 
-.security {
-  max-width: 1048px;
-  margin: 0 auto 80px;
-  padding: 30px;
-  background: linear-gradient(110deg, #171522, #11131d);
-  border: 1px solid #9472ff30;
-  border-radius: 15px;
+.button {
+    width: 100%;
+    min-height: 47px;
+    margin-top: 15px;
+    padding: 12px 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
 }
 
-.security h2 {
-  font: 600 25px 'Space Grotesk', sans-serif;
+.button:hover {
+    background: var(--accent2);
+    transform: translateY(-1px);
 }
 
-.security p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.9;
+.button:disabled {
+    opacity: .55;
+    cursor: wait;
+    transform: none;
+}
+
+.button.secondary {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+}
+
+.button.secondary:hover {
+    background: #252e40;
+}
+
+.status {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px;
+    margin-top: 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #0c1018;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.dot {
+    flex-shrink: 0;
+    width: 9px;
+    height: 9px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #9ca3af;
+}
+
+.dot.online {
+    background: var(--green);
+}
+
+.dot.error {
+    background: var(--red);
+}
+
+.profile {
+    display: none;
+    margin-top: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.avatar {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--panel2);
+    border: 2px solid var(--border);
+}
+
+.username {
+    font-size: 20px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.display-name {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.info-row {
+    padding: 13px 0;
+    border-top: 1px solid var(--border);
+}
+
+.info-label {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-value {
+    margin-top: 5px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.feature {
+    padding: 20px;
+    background: rgba(17, 21, 30, .75);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.feature strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.feature span {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
 }
 
 footer {
-  border-top: 1px solid #ffffff12;
-  padding: 28px;
-  text-align: center;
-  color: #777d91;
-  font-size: 11px;
+    padding: 27px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    text-align: center;
+    font-size: 12px;
 }
 
-footer strong {
-  color: white;
-}
+@media (max-width: 700px) {
+    .navbar {
+        padding: 0 5%;
+    }
 
-@media (max-width: 800px) {
-  nav {
-    display: none;
-  }
+    main {
+        padding: 45px 0;
+    }
 
-  .topbar {
-    padding: 18px;
-  }
+    .grid {
+        grid-template-columns: 1fr;
+    }
 
-  .discord-button {
-    padding: 10px;
-    font-size: 11px;
-  }
+    .features {
+        grid-template-columns: 1fr;
+    }
 
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 65px 22px;
-  }
-
-  .visual {
-    min-height: 310px;
-  }
-
-  .float-top {
-    right: 0;
-  }
-
-  .float-bottom {
-    left: 0;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-  }
-
-  .stat,
-  .stat:first-child,
-  .stat:last-child {
-    border-radius: 10px;
-    margin-bottom: 8px;
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .security {
-    margin: 0 18px 60px;
-  }
-
-  .section {
-    padding: 75px 18px;
-  }
+    h1 {
+        letter-spacing: -1.5px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <a class="brand" href="#">
-    <div class="logo"><span>WK</span></div>
-    <span>WEBKILL<span class="red">.</span></span>
-  </a>
+<header class="navbar">
+    <a class="brand" href="./">
+        <span class="logo">☠</span>
+        <span>WebKill</span>
+    </a>
 
-  <nav>
-    <a href="#features">Features</a>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#security">Security</a>
-  </nav>
-
-  <a class="discord-button" href="/auth/discord">
-    Login with Discord ↗
-  </a>
+    <span class="nav-label">AUTHENTICATION SYSTEM</span>
 </header>
 
 <main>
 
-<section class="hero">
-  <div>
-    <div class="eyebrow">● WEBHOOK SECURITY TOOLKIT</div>
+    <section class="hero">
+        <span class="eyebrow">WEBKILL AUTH</span>
 
-    <h1>
-      Keep your webhooks.<br>
-      <span class="gradient">Keep control.</span>
-    </h1>
+        <h1>
+            Your security.<br>
+            <span class="gradient">Your control.</span>
+        </h1>
 
-    <p class="description">
-      A focused security dashboard for inspecting webhook metadata,
-      reviewing checks, and keeping sensitive credentials out of
-      the wrong hands.
-    </p>
+        <p>
+            Sign in with Discord to access your WebKill account.
+            Investigate suspicious webhook activity and keep
+            your security workflow organized.
+        </p>
+    </section>
 
-    <div class="actions">
-      <a class="primary" href="/auth/discord">
-        Continue with Discord ↗
-      </a>
+    <section class="grid">
 
-      <a class="secondary" href="#features">
-        Explore features
-      </a>
-    </div>
+        <article class="card">
+            <div class="card-icon">🔐</div>
 
-    <p class="notice">
-      ◆ Only inspect webhooks you're authorized to manage.
-      Never share webhook tokens.
-    </p>
-  </div>
+            <h2>Discord Authentication</h2>
 
-  <div class="visual">
-    <div class="orbit"></div>
+            <p>
+                Sign in through Discord's official authorization
+                process. WebKill never asks for your Discord password.
+            </p>
 
-    <div class="shield">
-      <span>WK</span>
-    </div>
+            <a
+                class="button"
+                id="loginButton"
+                href="https://webkillauth.ech0playsss.workers.dev/auth/discord"
+            >
+                <span>🎮</span>
+                Login with Discord
+            </a>
 
-    <div class="floating float-top">
-      <small>WEBHOOK STATUS</small>
-      <strong>Ready to inspect</strong>
-    </div>
+            <div class="status" aria-live="polite">
+                <span class="dot" id="statusDot"></span>
+                <span id="statusText">
+                    Checking authentication service...
+                </span>
+            </div>
+        </article>
 
-    <div class="floating float-bottom">
-      <small>SECURITY MODE</small>
-      <strong>Credential-safe</strong>
-    </div>
-  </div>
-</section>
+        <article class="card">
+            <div class="card-icon">👤</div>
 
-<section class="stats" id="dashboard">
+            <h2>Your Account</h2>
 
-  <div class="stat">
-    <small>WEBHOOK INSPECTOR</small>
-    <h3>Metadata overview</h3>
-    <p>Review fields returned by Discord.</p>
-  </div>
+            <p>
+                When your login session is verified, your
+                Discord profile will appear here.
+            </p>
 
-  <div class="stat">
-    <small>ACTIVITY</small>
-    <h3>Review history</h3>
-    <p>Keep track of checks on your backend.</p>
-  </div>
+            <div class="profile" id="profile">
 
-  <div class="stat">
-    <small>ACCOUNT</small>
-    <h3>Discord OAuth2</h3>
-    <p>Sign in without collecting passwords.</p>
-  </div>
+                <div class="profile-header">
+                    <img
+                        class="avatar"
+                        id="avatar"
+                        alt="Discord avatar"
+                    >
 
-</section>
+                    <div>
+                        <div class="username" id="username">
+                            Discord User
+                        </div>
 
-<section class="section" id="features">
+                        <div class="display-name" id="displayName">
+                            Loading profile...
+                        </div>
+                    </div>
+                </div>
 
-  <div class="section-heading">
-    <div class="eyebrow">BUILT FOR RESPONSIBLE SECURITY</div>
-    <h2>Your tools. One place.</h2>
-    <p>Start with the essentials and expand as WebKill grows.</p>
-  </div>
+                <div class="info-row">
+                    <div class="info-label">Discord User ID</div>
+                    <div class="info-value" id="userId">—</div>
+                </div>
 
-  <div class="cards">
+                <div class="info-row">
+                    <div class="info-label">Authentication</div>
+                    <div class="info-value">Authenticated</div>
+                </div>
 
-    <article class="card">
-      <div class="card-icon">🔎</div>
-      <h3>Webhook Inspector</h3>
-      <p>
-        Display available webhook metadata in a readable format.
-        Keep webhook tokens hidden from pages, logs, and screenshots.
-      </p>
-      <span class="tag">METADATA</span>
-    </article>
+                <button class="button secondary" id="logoutButton">
+                    Log Out
+                </button>
 
-    <article class="card">
-      <div class="card-icon">📋</div>
-      <h3>Security Activity</h3>
-      <p>
-        Show recent checks and outcomes stored by your backend,
-        with clear timestamps and useful context.
-      </p>
-      <span class="tag">AUDIT TRAIL</span>
-    </article>
+            </div>
 
-    <article class="card">
-      <div class="card-icon">🛡️</div>
-      <h3>Discord Account</h3>
-      <p>
-        Use Discord OAuth2 to identify signed-in users and control
-        access to protected features.
-      </p>
-      <span class="tag">OAUTH2</span>
-    </article>
+            <div id="signedOutMessage" class="status">
+                <span class="dot"></span>
+                <span>
+                    You're not currently signed in, or your session
+                    could not be verified.
+                </span>
+            </div>
+        </article>
 
-  </div>
-</section>
+    </section>
 
-<section class="security" id="security">
-  <div class="eyebrow">SECURITY FIRST</div>
-  <h2>Secrets stay secret.</h2>
-  <p>
-    Never put a Discord client secret or webhook token in frontend
-    JavaScript. Keep secrets on your server, validate sessions there,
-    and authorize each action.
-  </p>
-</section>
+    <section class="features">
+
+        <article class="feature">
+            <strong>🛡️ Security First</strong>
+            <span>
+                Authentication through Discord OAuth2.
+                Never share your account credentials.
+            </span>
+        </article>
+
+        <article class="feature">
+            <strong>🔎 Webhook Inspection</strong>
+            <span>
+                Inspect webhook information for webhooks
+                you own or are authorized to investigate.
+            </span>
+        </article>
+
+        <article class="feature">
+            <strong>📋 Organized Reports</strong>
+            <span>
+                Build a workflow for documenting suspicious
+                activity and reporting potential scams.
+            </span>
+        </article>
+
+    </section>
 
 </main>
 
 <footer>
-  <strong>☠ WEBKILL.</strong>
-  &nbsp; Built for safer webhook management.
-  <br><br>
-  © <span id="year"></span> WebKill
+    WebKill © <span id="year"></span> · Community Security Project
 </footer>
 
 <script>
+"use strict";
+
+const AUTH_URL =
+    "https://webkillauth.ech0playsss.workers.dev";
+
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+const statusText = document.getElementById("statusText");
+const statusDot = document.getElementById("statusDot");
+const profile = document.getElementById("profile");
+const signedOutMessage = document.getElementById("signedOutMessage");
+
 document.getElementById("year").textContent =
-  new Date().getFullYear();
+    new Date().getFullYear();
+
+function setStatus(message, type = "") {
+    statusText.textContent = message;
+    statusDot.className = "dot";
+
+    if (type) {
+        statusDot.classList.add(type);
+    }
+}
+
+function showSignedOut() {
+    profile.style.display = "none";
+    signedOutMessage.style.display = "flex";
+    loginButton.style.display = "inline-flex";
+}
+
+function showProfile(user) {
+    profile.style.display = "block";
+    signedOutMessage.style.display = "none";
+    loginButton.style.display = "none";
+
+    document.getElementById("username").textContent =
+        user.username || "Discord User";
+
+    document.getElementById("displayName").textContent =
+        user.global_name || "No display name set";
+
+    document.getElementById("userId").textContent =
+        user.id || "Unavailable";
+
+    const avatar = document.getElementById("avatar");
+
+    if (user.id && user.avatar) {
+        const extension = user.avatar.startsWith("a_")
+            ? "gif"
+            : "png";
+
+        avatar.src =
+            `https://cdn.discordapp.com/avatars/` +
+            `${encodeURIComponent(user.id)}/` +
+            `${encodeURIComponent(user.avatar)}.${extension}`;
+
+        avatar.style.display = "block";
+    } else {
+        avatar.removeAttribute("src");
+        avatar.style.display = "none";
+    }
+}
+
+async function checkAuthentication() {
+    setStatus("Checking your login session...");
+
+    try {
+        const response = await fetch(`${AUTH_URL}/api/me`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        if (response.status === 401) {
+            showSignedOut();
+            setStatus("Not signed in.", "");
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(`Server returned ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.authenticated && result.user) {
+            showProfile(result.user);
+            setStatus("Discord session verified.", "online");
+        } else {
+            showSignedOut();
+            setStatus("Please sign in with Discord.", "");
+        }
+
+    } catch (error) {
+        showSignedOut();
+
+        setStatus(
+            "Unable to verify your session. Check your Worker, " +
+            "CORS settings, and browser cookie restrictions.",
+            "error"
+        );
+
+        console.error("WebKill authentication error:", error);
+    }
+}
+
+logoutButton.addEventListener("click", async () => {
+    logoutButton.disabled = true;
+    logoutButton.textContent = "Logging out...";
+
+    try {
+        const response = await fetch(`${AUTH_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            throw new Error("Logout request failed.");
+        }
+
+        showSignedOut();
+        setStatus("Logged out.", "");
+
+    } catch (error) {
+        setStatus(
+            "Logout could not be confirmed. Check your connection.",
+            "error"
+        );
+
+        console.error("WebKill logout error:", error);
+
+    } finally {
+        logoutButton.disabled = false;
+        logoutButton.textContent = "Log Out";
+    }
+});
+
+checkAuthentication();
 </script>
 
 </body>
-  </html>
+              </html>
